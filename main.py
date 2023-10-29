@@ -1,5 +1,9 @@
 import sys
 def encrypt(message):
+    """
+        encrypts the message
+        return: str encrypted message
+    """
 
     milon_encrypt = {
         'A': '56', 'B': '57', 'C': '58', 'D': '59', 'E': '40', 'F': '41', 'G': '42', 'H': '43', 'I': '44',
@@ -10,24 +14,21 @@ def encrypt(message):
         't': '91', 'u': '92', 'v': '93', 'w': '94', 'x': '95', 'y': '96', 'z': '97', ' ': '98', ',': '99',
         '.': '100', ';': '101', "'": '102', '?': '103', '!': '104', ':': '105'
     }
-    if (len(message) == 0) :
+    if len(message) == 0:
         return ""
-    message2= milon_encrypt.get(message[0])
+    message2 = milon_encrypt.get(message[0])
     for i in range(1, len(message)):
-        message2= message2+","+ milon_encrypt.get(message[i])
+        message2 = message2+","+ milon_encrypt.get(message[i])
     return message2
 
 
 
-def decrypt(messege):
+def decrypt(message):
     """
-        decrypts .
-        :param filepath: The path to the file.
-        :type filepath: str
-        :param string: The string to be written.
-        :type string: str
-        :return: None
-        """
+        decrypts the encrypted message
+        return: str original message
+    """
+
     milon_decrypt = {
         '56': 'A', '57': 'B', '58': 'C', '59': 'D', '40': 'E', '41': 'F', '42': 'G', '43': 'H', '44': 'I',
         '45': 'J', '46': 'K', '47': 'L', '48': 'M', '49': 'N', '60': 'O', '61': 'P', '62': 'Q', '63': 'R',
@@ -37,23 +38,23 @@ def decrypt(messege):
         '91': 't', '92': 'u', '93': 'v', '94': 'w', '95': 'x', '96': 'y', '97': 'z', '98': ' ', '99': ',',
         '100': '.', '101': ';', '102': "'", '103': '?', '104': '!', '105': ':'
     }
-    if (len(messege) == 0) :
+    if len(message) == 0:
         return ""
 
-    w=messege.count(',')
-    messege2 = ''
+    w = message.count(',')
+    message2 = ''
     if w!=0:
-        y=messege.index(',')
+        y=message.index(',')
 
 
         for i in range(w-1):
-            messege2 = str(messege2) + str(milon_decrypt.get(messege[0:y]))
-            messege = messege[y+1:]
-            y = messege.index(',')
-        messege2 = str(messege2) + str(milon_decrypt.get(messege[0:y]))
-        messege = messege[y + 1:]
-    messege2=messege2+str(milon_decrypt.get(messege))
-    return messege2
+            message2 = str(message2) + str(milon_decrypt.get(message[0:y]))
+            message = message[y+1:]
+            y = message.index(',')
+        message2 = str(message2) + str(milon_decrypt.get(message[0:y]))
+        message = message[y + 1:]
+    message2 = message2+str(milon_decrypt.get(message))
+    return message2
 
 
 
@@ -62,18 +63,23 @@ def main():
     assert len(sys.argv) == 2, "usage [encrypt/decrypt]"
     op = sys.argv[1]
     if op == "encrypt":
-        messege = input('enter what u want to encrypt:')
-        z = encrypt(messege)
+        message = input('enter what u want to encrypt:')
+        z = encrypt(message)
         input_file = open('encrypted_msg.txt','w')
         input_file.write(z)
         input_file.close()
         print(z)
     elif op == "decrypt":
-        input_file = open('encrypted_msg.txt','r')
-        messege = input_file.read()
-        print(messege)
-        input_file.close()
-        z = decrypt(messege)
+        message = ''
+        try:
+            input_file = open('encrypted_msg.txt','r')
+            message = input_file.read()
+            print(message)
+            input_file.close()
+        except:
+            print('failed to open file')
+            exit(1)
+        z = decrypt(message)
         print(z)
     else:
         assert False, "only encrypt/decrypt allowed"
