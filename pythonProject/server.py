@@ -12,29 +12,30 @@ def main():
     try:
         my_socket.bind(('0.0.0.0', 1729))
         my_socket.listen(QUEUE_LEN)
-        client_socket, client_address = my_socket.accept()
-        try:
-            request = client_socket.recv(MAX_PACKET).decode()
-            while request != "EXIT":
-                if request == "TIME":
-                    date = str(datetime.datetime.now())
-                    client_socket.send(date.encode())
-                elif request == "NAME":
-                    name = "server_hypothalamus"
-                    client_socket.send(name.encode())
-                elif request == "RAND":
-                    number = random.randint(1, 10)
-                    number = str(number)
-                    client_socket.send(number.encode())
+        while (True):
+            client_socket, client_address = my_socket.accept()
+            try:
                 request = client_socket.recv(MAX_PACKET).decode()
+                while request != "EXIT":
+                    if request == "TIME":
+                        date = str(datetime.datetime.now())
+                        client_socket.send(date.encode())
+                    elif request == "NAME":
+                        name = "server_hypothalamus"
+                        client_socket.send(name.encode())
+                    elif request == "RAND":
+                        number = random.randint(1, 10)
+                        number = str(number)
+                        client_socket.send(number.encode())
+                    request = client_socket.recv(MAX_PACKET).decode()
 
-        except socket.error as err:
-            print('received socket error on client socket' + str(err))
+            except socket.error as err:
+                print('received socket error on client socket' + str(err))
 
-        finally:
-            msg = "EXIT"
-            client_socket.send(msg.encode())
-            client_socket.close()
+            finally:
+                msg = "EXIT"
+                client_socket.send(msg.encode())
+                client_socket.close()
     except socket.error as err:
         print('received socket error on server socket' + str(err))
 
