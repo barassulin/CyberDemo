@@ -1,4 +1,6 @@
 import sys
+
+
 def encrypt(message):
     """
         encrypts the message
@@ -18,9 +20,8 @@ def encrypt(message):
         return ""
     message2 = milon_encrypt.get(message[0])
     for i in range(1, len(message)):
-        message2 = message2+","+ milon_encrypt.get(message[i])
+        message2 = message2 + "," + milon_encrypt.get(message[i])
     return message2
-
 
 
 def decrypt(message):
@@ -43,20 +44,17 @@ def decrypt(message):
 
     w = message.count(',')
     message2 = ''
-    if w!=0:
-        y=message.index(',')
+    if w != 0:
+        y = message.index(',')
 
-
-        for i in range(w-1):
+        for i in range(w - 1):
             message2 = str(message2) + str(milon_decrypt.get(message[0:y]))
-            message = message[y+1:]
+            message = message[y + 1:]
             y = message.index(',')
         message2 = str(message2) + str(milon_decrypt.get(message[0:y]))
         message = message[y + 1:]
-    message2 = message2+str(milon_decrypt.get(message))
+    message2 = message2 + str(milon_decrypt.get(message))
     return message2
-
-
 
 
 def main():
@@ -65,14 +63,14 @@ def main():
     if op == "encrypt":
         message = input('enter what u want to encrypt:')
         z = encrypt(message)
-        input_file = open('encrypted_msg.txt','w')
+        input_file = open('encrypted_msg.txt', 'w')
         input_file.write(z)
         input_file.close()
         print(z)
     elif op == "decrypt":
         message = ''
         try:
-            input_file = open('encrypted_msg.txt','r')
+            input_file = open('encrypted_msg.txt', 'r')
             message = input_file.read()
             print(message)
             input_file.close()
@@ -84,6 +82,6 @@ def main():
     else:
         assert False, "only encrypt/decrypt allowed"
 
+
 if __name__ == "__main__":
     main()
-
